@@ -47,6 +47,9 @@ gem "rails-i18n"
 # redis support
 gem "redis"
 
+# authorization support
+gem "pundit"
+
 group :development do
   gem "pry-rails"
 end

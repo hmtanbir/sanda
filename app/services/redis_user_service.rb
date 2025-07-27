@@ -7,6 +7,7 @@ class RedisUserService
     $redis_user_db.set("users:#{@user.id}", {
       id: @user.id,
       name: @user.email,
+      role: @user.role,
       created_at: @user.created_at,
       updated_at: @user.updated_at,
       deleted_at: nil
@@ -17,9 +18,12 @@ class RedisUserService
     redis_data = $redis_user_db.get("users:#{@user}")
 
     if redis_data.nil?
-      raise JWT::DecodeError, "Data not found in Redis DB"
+      raise StandardError, I18n.t("errors.redis_data_not_found")
     end
 
-   JSON.parse(redis_data)
+    User.new(JSON.parse(redis_data))
+  end
+  def delete
+    $redis_user_db.del("users:#{@user.id}")
   end
 end

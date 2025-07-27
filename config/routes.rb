@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
-  if Rails.env.test?
+  if Rails.env.test? || Rails.env.development?
     get "/test", to: "test#index"
     get "/test/not_found", to: "test#raise_not_found"
     get "/test/invalid_record", to: "test#raise_invalid_record"
