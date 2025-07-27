@@ -13,6 +13,7 @@ class Api::V1::UsersController < ApplicationController
   # POST /api/v1/users
   def create
     user = User.new(user_params)
+    user.role = :user
     if user.save
       RedisUserService.new(user).save
       render_json_response(:created, I18n.t("data.success.created"), serialized_data(user))
@@ -48,7 +49,9 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def user_params
-    params[:user] ? params.require(:user).permit(:name, :email, :password, :role) : params.permit(:name, :email, :password, :role)
+    permitted = [ :name, :email, :password ]
+    permitted << :role if @current_user&.admin?
+    params.require(:user).permit(permitted)
   end
 
   def users_data
