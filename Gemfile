@@ -39,10 +39,13 @@ gem "thruster", require: false
 gem "rack-cors"
 
 # model serialization
-gem "active_model_serializers", require: false
+gem "active_model_serializers"
 
 # I18n support
 gem "rails-i18n"
+
+# redis support
+gem "redis"
 
 group :development do
   gem "pry-rails"
@@ -57,6 +60,7 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  gem "mutex_m", require: false
 end
 
 group :test do
