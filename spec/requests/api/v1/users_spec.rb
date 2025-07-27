@@ -19,7 +19,7 @@ RSpec.describe "Api::V1::UsersController", type: :request do
 
       before do
         allow(PaginationService).to receive(:new)
-                                      .and_return(double(get_paginated_data: [[user1, user2], { total: 2 }]))
+                                      .and_return(double(get_paginated_data: [ [ user1, user2 ], { total: 2 } ]))
       end
 
       it "returns paginated list of users for authorized current users" do
