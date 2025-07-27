@@ -1,25 +1,24 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [ :create ]
+  skip_before_action :authenticate_request, :authorization_request,  only: [ :create ]
   before_action :set_user, only: %i[show update destroy]
+  before_action :users_data, only: :index
+  before_action :user_data, only: :show
 
   # GET /api/v1/users
-  def index
-    all_users_data
-  end
+  def index;end
 
   # GET /api/v1/users/:id
-  def show
-    user_data
-  end
+  def show;end
 
   # POST /api/v1/users
   def create
     user = User.new(user_params)
-    if user.save!
+    user.role = :user
+    if user.save
       RedisUserService.new(user).save
       render_json_response(:created, I18n.t("data.success.created"), serialized_data(user))
     else
-      render_json_response(:unprocessable_entity, user.errors.full_messages)
+      render_json_response(:unprocessable_content, user.errors.full_messages)
     end
   end
 
@@ -33,6 +32,7 @@ class Api::V1::UsersController < ApplicationController
 
   def destroy
     @user.update_attribute(:deleted_at, DateTime.now)
+    RedisUserService.new(@user).delete
     render_json_response(:ok, I18n.t("data.success.deleted"))
   rescue ActiveRecord::RecordNotDestroyed => error
     handle_exception(error)
@@ -41,18 +41,21 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def set_user
+    unless @current_user.admin? || params[:id].to_i == @current_user.id
+      return render_json_response(:unauthorized, I18n.t("api.errors.unauthorized"))
+    end
+
     @user = User.find(params[:id])
-  rescue ActiveRecord::RecordNotFound => error
-    handle_record_not_found(error)
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :password)
+    permitted = [ :name, :email, :password ]
+    permitted << :role if @current_user&.admin?
+    params.require(:user).permit(permitted)
   end
 
-  def all_users_data
-    users = User.all_user
-    data, pagination = PaginationService.new(users, pagination_info).get_paginated_data
+  def users_data
+    data, pagination = PaginationService.new(fetch_users, pagination_info).get_paginated_data
     render_json_response(:ok, I18n.t("data.success.fetched"), data, pagination)
   end
 
@@ -63,5 +66,10 @@ class Api::V1::UsersController < ApplicationController
 
   def serialized_data(user)
     UserSerializer.new(user).serializable_hash
+  end
+
+  def fetch_users
+    role = params[:role]
+    role ? User.role_users(role) : User.all_users
   end
 end

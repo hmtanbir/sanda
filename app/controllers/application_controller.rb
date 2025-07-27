@@ -1,11 +1,13 @@
 class ApplicationController < ActionController::API
-  before_action :authenticate_request
+  include Pundit::Authorization
+  before_action :authenticate_request, :authorization_request
 
   attr_reader :current_user
 
   rescue_from StandardError, with: :handle_exception
   rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :handle_invalid_record
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   DEFAULT_PAGE = 1
   DEFAULT_PER_PAGE = 10
@@ -55,10 +57,17 @@ class ApplicationController < ActionController::API
     begin
       decoded = JsonWebToken.decode(token)
       render_json_response(:unauthorized, I18n.t("token.invalid")) and return if decoded.nil?
-
       @current_user = RedisUserService.new(decoded[:user_id]).get_user_data
-    rescue ActiveRecord::RecordNotFound => e
+    rescue StandardError => e
       handle_record_not_found(e)
     end
+  end
+
+  def authorization_request
+    authorize @current_user
+  end
+
+  def user_not_authorized
+    render_json_response(:forbidden, I18n.t("api.errors.unauthorized"))
   end
 end

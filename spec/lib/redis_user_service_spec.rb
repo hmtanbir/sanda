@@ -15,6 +15,7 @@ RSpec.describe RedisUserService do
       expected_data = {
         id: user.id,
         name: user.email,
+        role: user.role,
         created_at: user.created_at,
         updated_at: user.updated_at,
         deleted_at: nil
@@ -31,6 +32,7 @@ RSpec.describe RedisUserService do
       {
         id: user.id,
         name: user.email,
+        role: user.role,
         created_at: user.created_at,
         updated_at: user.updated_at,
         deleted_at: nil
@@ -50,7 +52,16 @@ RSpec.describe RedisUserService do
 
       expect {
         described_class.new(user.id).get_user_data
-      }.to raise_error(JWT::DecodeError, "Data not found in Redis DB")
+      }.to raise_error(StandardError, I18n.t("errors.redis_data_not_found"))
+    end
+  end
+
+  describe "#delete" do
+    it "returns parsed user data from Redis" do
+      allow($redis_user_db).to receive(:get).with(redis_key).and_return(0)
+
+      result = described_class.new(user).delete
+      expect(result).to eq(0)
     end
   end
 end
