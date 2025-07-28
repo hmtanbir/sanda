@@ -11,14 +11,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       post "registration", to: "users#create"
       post "sessions", to: "sessions#create"
-      get "users", to: "users#index"
-      get "users/:id", to: "users#show"
-      patch "users/:id", to: "users#update"
-      delete "users/:id", to: "users#destroy"
+      resources :users, only: [ :index, :show, :update, :destroy ]
     end
   end
 
-  if Rails.env.test? || Rails.env.development?
+
+  if Rails.env.test?
     get "/test", to: "test#index"
     get "/test/not_found", to: "test#raise_not_found"
     get "/test/invalid_record", to: "test#raise_invalid_record"

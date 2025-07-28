@@ -1,6 +1,5 @@
 class Api::V1::SessionsController < ApplicationController
   skip_before_action :authenticate_request, only: [ :create ]
-  skip_before_action :authorization_request, only: :create
 
   def create
     user = User.find_by(email: user_params.dig(:email), deleted_at: nil)

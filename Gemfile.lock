@@ -112,6 +112,9 @@ GEM
     diff-lcs (1.6.2)
     docile (1.4.1)
     dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     drb (2.2.3)
     ed25519 (1.4.0)
     erb (5.0.2)
@@ -409,6 +412,7 @@ DEPENDENCIES
   brakeman
   database_cleaner
   debug
+  dotenv-rails
   factory_bot_rails
   faker
   jbuilder
@@ -436,4 +440,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.6.7
+   2.7.1

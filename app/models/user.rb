@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  enum :role, { admin: 0, user: 1 }
+  enum :role, YAML.load_file(Rails.root.join("config/roles.yml")).symbolize_keys.freeze
   has_secure_password
 
   validates :name, presence: true
