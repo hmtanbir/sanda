@@ -2,7 +2,10 @@
 <img width="1920" height="346" alt="sanda-design" src="https://github.com/user-attachments/assets/5e82e9df-656d-4809-beb3-c5597e57b420" />
 
 # Sanda - Zero Config API Boilerplate with Ruby on Rails
-![GitHub](https://img.shields.io/github/license/hmtanbir/sanda?label=License&style=flat-square)
+![Static Badge](https://img.shields.io/badge/license-MIT-red) ![Static Badge](https://img.shields.io/badge/version-1.0.0-cyan)
+![Static Badge](https://img.shields.io/badge/bundler-2.7.1-blue) ![Static Badge](https://img.shields.io/badge/ruby-3.3.6-red)
+![Static Badge](https://img.shields.io/badge/rails-8.x.x-yellow) ![Static Badge](https://img.shields.io/badge/postgresql-14.x-green)
+![Static Badge](https://img.shields.io/badge/redis-7.x-blue) ![Static Badge](https://img.shields.io/badge/coverage-100%25-green)
 
 Sanda is a zero-config API boilerplate with Ruby on Rails, PostgreSQL 14.x, Pundit and comes with excellent user and role management API out of the box. 
 Start your next big API project with Sanda, focus on building business logic, and save countless hours of writing boring user and role management API again and again.
