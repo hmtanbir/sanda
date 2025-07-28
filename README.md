@@ -13,9 +13,11 @@ Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
     - [Requirements](#requirements)
     - [Getting Started](#getting-started)
         - [Without Docker (Simple)](#without-docker-simple)
+          - [Install the dependencies](#install-the-dependencies) 
+          - [Configure Database](#configure-database)
+          - [Database Migration and Seeding](#database-migration-and-seeding)
         - [Using Docker](#using-docker)
         - [Screencast](#screencast)
-    - [Database Migration and Seeding](#database-migration-and-seeding)
     - [List of Default Routes](#list-of-default-routes)
     - [Default Roles](#default-roles)
     - [Routes Documentation](#routes-documentation)
@@ -68,7 +70,9 @@ Then follow the process using either Docker or without Docker (simple).
 
 ### Without Docker (Simple)
 
-1. Install the dependencies
+## Install the dependencies
+
+1. Install project gems
 
 ```shell
 bundle install
@@ -86,7 +90,7 @@ cp .env.example .env
 bundle exec rails secret
 ```
 
-4. Setup Database
+## Configure Database
 If you use mysql database instead of postgresql, then uncomment line 9 from Gemfile and comment line 6 and install the mysql2 gem using bundler.
 We have to disable using `gem pg` if we use `gem mysql2`
 
@@ -101,28 +105,6 @@ gem "mysql2", "~> 0.5"
 ```shell
 bundle install
 ```
-
-5. create, migrate and seeding data into database using following command:
-
-```shell
-rails db:setup
-```
-
-6. Start the webserver
-
-```shell
-bundle exec rails server -p 3000 -b 0.0.0.0
-```
-
-That's mostly it! You have a fully running Ruby on Rails installation, all configured.
-
-### Using Docker
-
-
-
-### Screencast
-
-[![asciicast](https://asciinema.org)]()
 
 ## Database Migration and Seeding
 
@@ -150,7 +132,23 @@ Run `db:seed`, and you have your first admin user, normal user, and the relation
 bundle exec rails db:seed
 ```
 
-Please note that the default admin user is **admin@example.com** and the default password is **admin123**. You should create a new admin user before deploying to production and delete this default admin user. You can do that using the available Sanda user management API or any DB management tool.
+Please note that the default admin user is **admin@sanda.project** and the default password is **sanda-admin-123**. You should create a new admin user before deploying to production and delete this default admin user. You can do that using the available Sanda user management API or any DB management tool.
+
+## Start the webserver
+
+You can run server following command:
+
+```shell
+bundle exec rails server -p 3000 -b 0.0.0.0
+```
+
+That's mostly it! You have a fully running Ruby on Rails installation, all configured.
+
+### Using Docker
+
+### Screencast
+
+[![asciicast](https://asciinema.org)]()
 
 ## List of Default Routes
 
