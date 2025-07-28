@@ -1,4 +1,5 @@
-![Sanda - Zero Config API Boilerplate with Ruby on Rails ](https://github-production-user-asset-6210df.s3.amazonaws.com/14236200/471321385-1090b7b6-0205-42c5-a618-998432b17388.png)
+
+<img width="1920" height="346" alt="sanda-design" src="https://github.com/user-attachments/assets/5e82e9df-656d-4809-beb3-c5597e57b420" />
 
 # Sanda - Zero Config API Boilerplate with Ruby on Rails
 ![GitHub](https://img.shields.io/github/license/hmtanbir/sanda?label=License&style=flat-square)
@@ -159,7 +160,8 @@ Here is a list of default routes. Run the following rails command to see this li
 bundle exec rails routes
 ```
 
-![Sanda - List of Default Routes]()
+<img width="1897" height="524" alt="Screenshot 2025-07-28 at 11 08 56 AM" src="https://github.com/user-attachments/assets/7251206d-b717-449c-b77f-e9105c34e39d" />
+
 
 ## Default Roles
 
@@ -685,6 +687,9 @@ To check coverage, open the coverage file:
 ```shell
 open coverage/index.html
 ```
+
+<img width="1894" height="750" alt="Screenshot 2025-07-28 at 4 46 01 PM" src="https://github.com/user-attachments/assets/601250f9-568d-419d-b7d3-e3396b49d184" />
+
 
 
 ## Tutorial
