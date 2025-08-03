@@ -1,0 +1,56 @@
+services:
+  mysql:
+    image: mysql:9.4.0
+    container_name: sanda_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "3305:3306" # Host port 3305 -> Container port 3306
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - app-network
+  redis:
+    image: redis:7.4.5-alpine3.21
+    container_name: sanda_redis
+    restart: always
+    ports:
+      - "6378:6379"  # Host port 6379 -> Container port 6379
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+    volumes:
+      - redisdata:/data
+  app:
+    build: .
+    container_name: sanda
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    env_file:
+      - .env.mysql.docker
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+volumes:
+  mysqldata:
+  redisdata:
+
+networks:
+  app-network:
+    driver: bridge

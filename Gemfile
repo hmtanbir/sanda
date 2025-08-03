@@ -6,7 +6,7 @@ gem "rails", "~> 8.0.2"
 gem "pg", "~> 1.1"
 
 # User mysql2 as the database for Active Record
-# gem "mysql2", "~> 0.5"
+gem "mysql2", "~> 0.5"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -20,7 +20,7 @@ gem "bcrypt"
 gem "jwt"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "tzinfo-data"
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
