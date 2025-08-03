@@ -4,6 +4,10 @@ source "https://rubygems.org"
 gem "rails", "~> 8.0.2"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
+
+# User mysql2 as the database for Active Record
+gem "mysql2", "~> 0.5"
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
@@ -16,7 +20,7 @@ gem "bcrypt"
 gem "jwt"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "tzinfo-data"
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
@@ -39,10 +43,19 @@ gem "thruster", require: false
 gem "rack-cors"
 
 # model serialization
-gem "active_model_serializers", require: false
+gem "active_model_serializers"
 
 # I18n support
 gem "rails-i18n"
+
+# redis support
+gem "redis"
+
+# authorization support
+gem "pundit"
+
+# env support
+gem "dotenv-rails"
 
 group :development do
   gem "pry-rails"
@@ -57,6 +70,7 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  gem "mutex_m", require: false
 end
 
 group :test do

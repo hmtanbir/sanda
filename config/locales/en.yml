@@ -29,3 +29,20 @@
 
 en:
   hello: "Hello world"
+  data:
+    success:
+      fetched: "Successfully data fetched"
+      created: "Successfully data created"
+      updated: "Successfully data updated"
+      deleted: "Successfully data deleted"
+    not_found: "data not found"
+  token:
+    not_found: "token not found"
+    invalid: "Invalid token"
+  api:
+    errors:
+      invalid_email: "invalid email"
+      invalid_password: "invalid password"
+      unauthorized: "unauthorized"
+  errors:
+    redis_data_not_found: "Data not found in Redis DB"

@@ -7,4 +7,19 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  namespace :api do
+    namespace :v1 do
+      post "registration", to: "users#create"
+      post "sessions", to: "sessions#create"
+      resources :users, only: [ :index, :show, :update, :destroy ]
+    end
+  end
+
+
+  if Rails.env.test?
+    get "/test", to: "test#index"
+    get "/test/not_found", to: "test#raise_not_found"
+    get "/test/invalid_record", to: "test#raise_invalid_record"
+    get "/test/error", to: "test#raise_standard_error"
+  end
 end
