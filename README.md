@@ -20,6 +20,11 @@ Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
           - [Configure Database](#configure-database)
           - [Database Migration and Seeding](#database-migration-and-seeding)
         - [Using Docker](#using-docker)
+          - [Prepare docker compose file](#prepare-docker-compose-file)
+          - [Build docker container](#build-docker-container)
+          - [Run docker container](#run-docker-container)
+          - [Stop docker container](#stop-docker-container)
+          - [Remove docker container](#remove-docker-container)
         - [Screencast](#screencast)
     - [List of Default Routes](#list-of-default-routes)
     - [Default Roles](#default-roles)
@@ -80,13 +85,14 @@ Then follow the process using either Docker or without Docker (simple).
 bundle install
 ```
 
-2. Copy `.env.example` to `.env`
+2. Prepare .env file
 
+Copy .env.example file and paste as .env
 ```shell
 cp .env.example .env
 ```
 
-3. Generate application secret key and update .env file's `secret` value.
+3. Generate application secret key and update .env file's `SECRET_KEY` value.
 
 ```shell
 bundle exec rails secret
@@ -110,7 +116,7 @@ bundle install
 
 ## Database Migration and Seeding
 
-Open your `.env` file and change the DATABASE options. You can start with PostgresSQL by following these steps
+Open your `.env` file and change the DATABASE options. You can start by following these steps
 
 1. Create a new database
 
@@ -146,7 +152,70 @@ bundle exec rails server -p 3000 -b 0.0.0.0
 
 That's mostly it! You have a fully running Ruby on Rails installation, all configured.
 
-### Using Docker
+## Using Docker
+If you want to use docker container, then you have to follow some steps following below:
+
+### Prepare docker compose file
+
+You need to prepare docker compose file at first based on database. 
+If you use postgresql database, then use `docker-compose.pg.yml`
+
+```shell
+cp -r docker-compose.pg.yml docker-compose.yml
+```
+
+OR, If you use mysql database, then use `docker-compose.mysql.yml`
+
+```shell
+cp -r docker-compose.mysql.yml docker-compose.yml
+```
+
+Now, your docker compose file is ready to build.
+
+### Build docker container
+
+Before building configure, you need to configure Gemfile for database gem selection.
+
+If you use **mysql** database instead of **postgresql**, then uncomment line 9 from Gemfile and comment line 6 and install the **mysql2 gem** using bundler.
+
+We have to disable using `gem pg` if we use `gem mysql2`, by default, `gem pg` installed.
+
+```yml
+# Use postgresql as the database for Active Record
+#gem "pg", "~> 1.1"
+
+# User mysql2 as the database for Active Record
+gem "mysql2", "~> 0.5"
+```
+
+Build your docker container following command:
+
+```shell
+docker-compose build --no-cache
+```
+
+### Run docker container
+
+Now, We will run the container following command:
+
+```shell
+docker-compose up -d
+```
+
+### Stop docker container
+
+Now, We will run the container following command:
+
+```shell
+docker-compose down
+```
+
+### Remove docker container
+If you want remove container with it's volumes following the command:
+
+```shell
+docker-compose down --volumes --remove-orphans
+```
 
 ### Screencast
 

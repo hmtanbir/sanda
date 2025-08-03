@@ -176,6 +176,7 @@ GEM
     minitest (5.25.5)
     msgpack (1.8.0)
     mutex_m (0.3.0)
+    mysql2 (0.5.6)
     net-imap (0.5.9)
       date
       net-protocol
@@ -379,6 +380,8 @@ GEM
     tsort (0.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2025.2)
+      tzinfo (>= 1.0.0)
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
@@ -419,6 +422,7 @@ DEPENDENCIES
   jwt
   kamal
   mutex_m
+  mysql2 (~> 0.5)
   pg (~> 1.1)
   pry-rails
   puma (>= 5.0)
