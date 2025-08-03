@@ -54,8 +54,7 @@ The setups steps expect following tools installed on the system.
 
 - Ruby        => [3.3.6](javascript:void(0);)
 - Rails       => [8.x](javascript:void(0);)
-- PostgreSQL  => [14.x](javascript:void(0);)
-- MySQL       => [9.x](javascript:void(0);)
+- PostgreSQL  => [14.x](javascript:void(0);) or MySQL => [9.x](javascript:void(0);)
 - Redis       => [7.x](javascript:void(0);)
 
 ## Getting Started
