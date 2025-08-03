@@ -206,7 +206,12 @@ docker-compose down --volumes --remove-orphans
 ### Screencast
 
 Install Sanda with postgresql (without docker)
-[![asciicast](https://asciinema.org)](https://asciinema.org/a/731403)
+
+[![asciicast](https://asciinema.org/a/731403.svg)](https://asciinema.org/a/731403)
+
+
+
+
 
 Install Sanda with mysql (without docker)
 [![asciicast](https://asciinema.org)]()
