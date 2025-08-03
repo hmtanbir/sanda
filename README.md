@@ -121,7 +121,7 @@ Open your `.env` file and change the DATABASE options. You can start by followin
 1. Create a new database
 
 ```shell
-bundle exec rails db:crete
+bundle exec rails db:create
 ```
 
 2. Run Migrations
