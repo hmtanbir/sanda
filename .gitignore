@@ -8,7 +8,7 @@
 /.bundle
 
 # Ignore all environment files.
-/.env*
+/.env
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -30,6 +30,6 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-.idea
+/.idea/
 .idea/sanda.iml
-coverage
+/coverage/*

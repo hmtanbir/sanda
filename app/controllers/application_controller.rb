@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
   include Pundit::Authorization
-  before_action :authenticate_request, :authorization_request
+  before_action :authenticate_request
 
   attr_reader :current_user
 
@@ -61,10 +61,6 @@ class ApplicationController < ActionController::API
     rescue StandardError => e
       handle_record_not_found(e)
     end
-  end
-
-  def authorization_request
-    authorize @current_user
   end
 
   def user_not_authorized

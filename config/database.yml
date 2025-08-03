@@ -13,50 +13,25 @@
 # gem "pg"
 #
 default: &default
-  adapter: postgresql
-  encoding: unicode
+  adapter: <%= ENV["DB_ADAPTER"] %>
+  encoding: <%= ENV["DB_ENCODING"] %>
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV["DB_POOL"] %>
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
 
 
 development:
   <<: *default
-  database: sanda_development
-
-  # The specified database role being used to connect to PostgreSQL.
-  # To create additional roles in PostgreSQL see `$ createuser --help`.
-  # When left blank, PostgreSQL will use the default role. This is
-  # the same name as the operating system user running Rails.
-  #username: sanda
-
-  # The password associated with the PostgreSQL role (username).
-  #password:
-
-  # Connect on a TCP socket. Omitted by default since the client uses a
-  # domain socket that doesn't need configuration. Windows does not have
-  # domain sockets, so uncomment these lines.
-  #host: localhost
-
-  # The TCP port the server listens on. Defaults to 5432.
-  # If your server runs on a different port number, change accordingly.
-  #port: 5432
-
-  # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
-
-  # Minimum log levels, in increasing order:
-  #   debug5, debug4, debug3, debug2, debug1,
-  #   log, notice, warning, error, fatal, and panic
-  # Defaults to warning.
-  #min_messages: notice
+  database: <%= "#{ENV["DB_NAME"]}_development" %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: sanda_test
+  database: <%= "#{ENV["DB_NAME"]}_test" %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -81,18 +56,18 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: sanda_production
-    username: sanda
-    password: <%= ENV["SANDA_DATABASE_PASSWORD"] %>
+    database: <%= "#{ENV["DB_NAME"]}_production" %>
+    username: <%= ENV["DB_USERNAME"] %>
+    password: <%= ENV["DB_PASSWORD"] %>
   cache:
     <<: *primary_production
-    database: sanda_production_cache
+    database: <%= "#{ENV["DB_NAME"]}_production_cache" %>
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: sanda_production_queue
+    database: <%= "#{ENV["DB_NAME"]}_production_queue" %>
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: sanda_production_cable
+    database: <%= "#{ENV["DB_NAME"]}_production_cable" %>
     migrations_paths: db/cable_migrate

@@ -10,17 +10,21 @@
 
 puts "Seeding users..."
 
-admin = User.find_or_create_by!(email: "admin@example.com") do |user|
-  user.password = "admin123"
+admin = User.find_or_create_by!(email: "admin@sanda.project") do |user|
+  user.password = "sanda-admin-123"
   user.name = "Admin User"
   user.role = :admin
 end
 
-user = User.find_or_create_by!(email: "user@example.com") do |user|
-  user.password = "user123"
+user = User.find_or_create_by!(email: "user@sanda.project") do |user|
+  user.password = "sanda-user-123"
   user.name = "Regular User"
   user.role = :user
 end
+
+# remove old users data from redis database
+keys = $redis_user_db.keys("users:*")
+$redis_user_db.del(*keys) unless keys.empty?
 
 # Store in Redis DB
 [ admin, user ].each do |u|

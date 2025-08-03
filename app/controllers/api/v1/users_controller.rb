@@ -1,5 +1,7 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request, :authorization_request,  only: [ :create ]
+  skip_before_action :authenticate_request, only: [ :create ]
+
+  before_action :authorization_request, only: %i[index show update destroy]
   before_action :set_user, only: %i[show update destroy]
   before_action :users_data, only: :index
   before_action :user_data, only: :show
@@ -71,5 +73,9 @@ class Api::V1::UsersController < ApplicationController
   def fetch_users
     role = params[:role]
     role ? User.role_users(role) : User.all_users
+  end
+
+  def authorization_request
+    authorize @current_user, policy_class: UserPolicy
   end
 end
