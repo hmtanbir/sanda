@@ -16,8 +16,7 @@ Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
     - [Requirements](#requirements)
     - [Getting Started](#getting-started)
         - [Without Docker (Simple)](#without-docker-simple)
-          - [Install the dependencies](#install-the-dependencies) 
-          - [Configure Database](#configure-database)
+          - [Install the dependencies](#install-the-dependencies)
           - [Database Migration and Seeding](#database-migration-and-seeding)
         - [Using Docker](#using-docker)
           - [Prepare docker compose file](#prepare-docker-compose-file)
@@ -96,22 +95,6 @@ cp .env.example .env
 
 ```shell
 bundle exec rails secret
-```
-
-## Configure Database
-If you use mysql database instead of postgresql, then uncomment line 9 from Gemfile and comment line 6 and install the mysql2 gem using bundler.
-We have to disable using `gem pg` if we use `gem mysql2`
-
-```yml
-# Use postgresql as the database for Active Record
-#gem "pg", "~> 1.1"
-
-# User mysql2 as the database for Active Record
-gem "mysql2", "~> 0.5"
-```
-
-```shell
-bundle install
 ```
 
 ## Database Migration and Seeding
@@ -203,24 +186,20 @@ If you want remove container with it's volumes following the command:
 docker-compose down --volumes --remove-orphans
 ```
 
-### Screencast
+## Screencasts
 
-Install Sanda with postgresql (without docker)
+### Install Sanda with postgresql (without docker)
 
-[![asciicast](https://asciinema.org/a/731403.svg)](https://asciinema.org/a/731403)
+[![asciicast](https://asciinema.org/a/731736.svg)](https://asciinema.org/a/731736)
 
+### Install Sanda with mysql (without docker)
+[![asciicast](https://asciinema.org/a/731741.svg)](https://asciinema.org/a/731741)
 
+### Install Sanda with postgresql (using docker)
+[![asciicast](https://asciinema.org/a/731743.svg)](https://asciinema.org/a/731743)
 
-
-
-Install Sanda with mysql (without docker)
-[![asciicast](https://asciinema.org)]()
-
-Install Sanda with postgresql (using docker)
-[![asciicast](https://asciinema.org)]()
-
-Install Sanda with mysql (using docker)
-[![asciicast](https://asciinema.org)]()
+### Install Sanda with mysql (using docker)
+[![asciicast](https://asciinema.org/a/731736.svg)](https://asciinema.org/a/731736)
 
 ## List of Default Routes
 
