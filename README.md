@@ -213,7 +213,7 @@ Here is a list of default routes. Run the following rails command to see this li
 bundle exec rails routes
 ```
 
-<img width="1897" height="524" alt="Screenshot 2025-07-28 at 11 08 56 AM" src="https://github.com/user-attachments/assets/7251206d-b717-449c-b77f-e9105c34e39d" />
+<img width="1897" height="615" alt="Screenshot 2025-08-05 at 4 58 41 PM" src="https://github.com/user-attachments/assets/19ff1187-0379-466d-a871-3d4855744247" />
 
 
 ## Default Roles
