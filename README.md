@@ -24,7 +24,11 @@ Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
           - [Run docker container](#run-docker-container)
           - [Stop docker container](#stop-docker-container)
           - [Remove docker container](#remove-docker-container)
-        - [Screencast](#screencast)
+        - [Screencasts](#screencasts)
+          - [Install sanda with postgresql without Docker](#install-sanda-with-postgresql-without-docker)
+          - [Install sanda with mysql without Docker](#install-sanda-with-mysql-without-docker)
+          - [Install sanda with postgresql with Docker](#install-sanda-with-postgresql-using-docker)
+          - [Install sanda with mysql with Docker](#install-sanda-with-mysql-using-docker)
     - [List of Default Routes](#list-of-default-routes)
     - [Default Roles](#default-roles)
     - [Routes Documentation](#routes-documentation)
@@ -199,7 +203,7 @@ docker-compose down --volumes --remove-orphans
 [![asciicast](https://asciinema.org/a/731743.svg)](https://asciinema.org/a/731743)
 
 ### Install Sanda with mysql (using docker)
-[![asciicast](https://asciinema.org/a/731736.svg)](https://asciinema.org/a/731736)
+[![asciicast](https://asciinema.org/a/731744.svg)](https://asciinema.org/a/731744)
 
 ## List of Default Routes
 
