@@ -16,8 +16,7 @@ Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
     - [Requirements](#requirements)
     - [Getting Started](#getting-started)
         - [Without Docker (Simple)](#without-docker-simple)
-          - [Install the dependencies](#install-the-dependencies) 
-          - [Configure Database](#configure-database)
+          - [Install the dependencies](#install-the-dependencies)
           - [Database Migration and Seeding](#database-migration-and-seeding)
         - [Using Docker](#using-docker)
           - [Prepare docker compose file](#prepare-docker-compose-file)
@@ -25,7 +24,11 @@ Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
           - [Run docker container](#run-docker-container)
           - [Stop docker container](#stop-docker-container)
           - [Remove docker container](#remove-docker-container)
-        - [Screencast](#screencast)
+        - [Screencasts](#screencasts)
+          - [Install sanda with postgresql without Docker](#install-sanda-with-postgresql-without-docker)
+          - [Install sanda with mysql without Docker](#install-sanda-with-mysql-without-docker)
+          - [Install sanda with postgresql with Docker](#install-sanda-with-postgresql-using-docker)
+          - [Install sanda with mysql with Docker](#install-sanda-with-mysql-using-docker)
     - [List of Default Routes](#list-of-default-routes)
     - [Default Roles](#default-roles)
     - [Routes Documentation](#routes-documentation)
@@ -82,7 +85,7 @@ Then follow the process using either Docker or without Docker (simple).
 1. Install project gems
 
 ```shell
-bundle install
+bundle install --path=vendor
 ```
 
 2. Prepare .env file
@@ -98,22 +101,6 @@ cp .env.example .env
 bundle exec rails secret
 ```
 
-## Configure Database
-If you use mysql database instead of postgresql, then uncomment line 9 from Gemfile and comment line 6 and install the mysql2 gem using bundler.
-We have to disable using `gem pg` if we use `gem mysql2`
-
-```yml
-# Use postgresql as the database for Active Record
-#gem "pg", "~> 1.1"
-
-# User mysql2 as the database for Active Record
-gem "mysql2", "~> 0.5"
-```
-
-```shell
-bundle install
-```
-
 ## Database Migration and Seeding
 
 Open your `.env` file and change the DATABASE options. You can start by following these steps
@@ -121,7 +108,7 @@ Open your `.env` file and change the DATABASE options. You can start by followin
 1. Create a new database
 
 ```shell
-bundle exec rails db:crete
+bundle exec rails db:create
 ```
 
 2. Run Migrations
@@ -174,20 +161,6 @@ Now, your docker compose file is ready to build.
 
 ### Build docker container
 
-Before building configure, you need to configure Gemfile for database gem selection.
-
-If you use **mysql** database instead of **postgresql**, then uncomment line 9 from Gemfile and comment line 6 and install the **mysql2 gem** using bundler.
-
-We have to disable using `gem pg` if we use `gem mysql2`, by default, `gem pg` installed.
-
-```yml
-# Use postgresql as the database for Active Record
-#gem "pg", "~> 1.1"
-
-# User mysql2 as the database for Active Record
-gem "mysql2", "~> 0.5"
-```
-
 Build your docker container following command:
 
 ```shell
@@ -217,9 +190,20 @@ If you want remove container with it's volumes following the command:
 docker-compose down --volumes --remove-orphans
 ```
 
-### Screencast
+## Screencasts
 
-[![asciicast](https://asciinema.org)]()
+### Install Sanda with postgresql (without docker)
+
+[![asciicast](https://asciinema.org/a/731736.svg)](https://asciinema.org/a/731736)
+
+### Install Sanda with mysql (without docker)
+[![asciicast](https://asciinema.org/a/731741.svg)](https://asciinema.org/a/731741)
+
+### Install Sanda with postgresql (using docker)
+[![asciicast](https://asciinema.org/a/731743.svg)](https://asciinema.org/a/731743)
+
+### Install Sanda with mysql (using docker)
+[![asciicast](https://asciinema.org/a/731744.svg)](https://asciinema.org/a/731744)
 
 ## List of Default Routes
 
@@ -229,7 +213,7 @@ Here is a list of default routes. Run the following rails command to see this li
 bundle exec rails routes
 ```
 
-<img width="1897" height="524" alt="Screenshot 2025-07-28 at 11 08 56 AM" src="https://github.com/user-attachments/assets/7251206d-b717-449c-b77f-e9105c34e39d" />
+<img width="1897" height="615" alt="Screenshot 2025-08-05 at 4 58 41 PM" src="https://github.com/user-attachments/assets/19ff1187-0379-466d-a871-3d4855744247" />
 
 
 ## Default Roles

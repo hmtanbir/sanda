@@ -38,7 +38,7 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-      db:
+      mysql:
         condition: service_healthy
     env_file:
       - .env.mysql.docker
