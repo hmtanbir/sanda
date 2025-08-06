@@ -216,7 +216,7 @@ bundle exec rails routes
 
 ## Default Roles
 
-Sanda comes with these `admin` & `user` roles out of the box. For details, open the User model class.
+Sanda comes with these `admin` & `user` roles out of the box. For details, If you want to add more role, open `config/roles.yml` file.
 
 
 ## Routes Documentation
@@ -542,7 +542,7 @@ For example, to update the user with id 2, use this endpoint `http://localhost:3
 **API request**
 
 ```shell
-curl --location --request PATCH 'localhost:3000/api/v1/users' \
+curl --location --request POST 'localhost:3000/api/v1/users' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3NTM3NjcwNzR9.MMFIA1OwwXkPpkmaEZbz4P6fGvKJ28Uy8PTsL6RgBa8' \
 --header 'Content-Type: application/json' \
 --data '{
@@ -752,7 +752,7 @@ For any unsuccessful attempt with an invalid `user id`, you will receive a 404 n
 
 ### Default Admin Username and Password
 
-When you run the database seeders, a default admin user is created with the username '**admin@sanda.project**' and the password '**sanda-admin-123**'. You can login as this default admin user and use the bearer token on next API calls where admin ability is required.
+When you run the database seeders, a default admin user is created with the username **admin@sanda.project** and the password **sanda-admin-123**. You can login as this default admin user and use the bearer token on next API calls where admin ability is required.
 
 When you push your application to production, please remember to change this user's password, email or simply create a new admin user and delete the default one.
 
