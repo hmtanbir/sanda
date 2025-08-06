@@ -34,3 +34,4 @@
 .idea/sanda.iml
 /coverage/*
 docker-compose.yml
+vendor/
