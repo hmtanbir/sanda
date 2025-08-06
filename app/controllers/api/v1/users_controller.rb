@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [ :create ]
+  skip_before_action :authenticate_request, only: [ :registration ]
 
   before_action :authorization_request, only: %i[index show update destroy]
   before_action :set_user, only: %i[show update destroy]
@@ -15,7 +15,7 @@ class Api::V1::UsersController < ApplicationController
   # POST /api/v1/users
   def create
     user = User.new(user_params)
-    user.role = :user
+    user.role = :user if user.role.nil?
     if user.save
       RedisUserService.new(user).save
       render_json_response(:created, I18n.t("data.success.created"), serialized_data(user))
@@ -38,6 +38,10 @@ class Api::V1::UsersController < ApplicationController
     render_json_response(:ok, I18n.t("data.success.deleted"))
   rescue ActiveRecord::RecordNotDestroyed => error
     handle_exception(error)
+  end
+
+  def registration
+    create
   end
 
   private

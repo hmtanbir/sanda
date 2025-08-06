@@ -36,6 +36,7 @@ Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
         - [User Authentication/Login (Admin)](#user-authenticationlogin-admin)
         - [User Authentication/Login (Other Roles)](#user-authenticationlogin-other-roles)
         - [List Users (Admin Ability Required)](#list-users-admin-ability-required)
+        - [Create a User (User/Admin Ability Required)](#create-a-user-useradmin-ability-required)
         - [Update a User (User/Admin Ability Required)](#update-a-user-useradmin-ability-required)
         - [Delete a User (Admin Ability Required)](#delete-a-user-admin-ability-required)
     - [Notes](#notes)
@@ -528,6 +529,96 @@ For any unsuccessful attempt or wrong token (other user token who have not any p
 }
 ```
 
+### Create a User (User/Admin Ability Required)
+
+Make an `HTTP POST` request to the following route to create a other role (admin/editor/manager etc.) user. You must include a Bearer token obtained from User/Admin authentication. A bearer admin token can create other user.
+
+```shell
+http://localhost:8000/api/v1/users
+```
+
+For example, to update the user with id 2, use this endpoint `http://localhost:3000/api/v1/users/2`
+
+**API request**
+
+```shell
+curl --location --request PATCH 'localhost:3000/api/v1/users' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3NTM3NjcwNzR9.MMFIA1OwwXkPpkmaEZbz4P6fGvKJ28Uy8PTsL6RgBa8' \
+--header 'Content-Type: application/json' \
+--data '{
+    "user": {
+        "name": "Sanda admin 1",
+        "email": "admin1@sanda.project",
+        "password": "sanda-admin-123",
+        "role": "admin"
+    }
+}'
+```
+
+
+**API Payload**
+
+You can include `name` , `email`, and `role` in a JSON payload, just like this
+
+```json
+{
+  "user": {
+    "name": "Sanda Another Admin",
+    "email": "another-admin@sanda.project",
+    "password": "sanda-admin-123",
+    "role": "admin"
+  }
+}
+```
+**API Response**
+
+You will receive the created user if the bearer token is valid.
+
+```json
+{
+  "status": 201,
+  "message": "Successfully data created",
+  "data": {
+    "id": 4,
+    "name": "Admin",
+    "email": "admin3@oytrack.project",
+    "role": "admin",
+    "created_at": "2025-08-06T07:55:48.536Z",
+    "updated_at": "2025-08-06T07:55:48.536Z",
+    "deleted_at": null
+  }
+}
+```
+
+For any unsuccessful attempt with an invalid token, you will receive a 401 error response.
+
+```json
+{
+  "status": 401,
+  "message": "Invalid token",
+  "data": null
+}
+```
+
+If a bearer user token attempts to update any other user but itself, a 401 error response will be delivered
+
+```json
+{
+  "status": 401,
+  "message": "unauthorized",
+  "data": null
+}
+```
+
+If role is invalid, then you will get a 500 error response like below:
+
+```json
+{
+    "status": 500,
+    "message": "'editor' is not a valid role",
+    "data": null
+}
+```
 
 ### Update a User (User/Admin Ability Required)
 
