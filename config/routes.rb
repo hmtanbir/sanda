@@ -9,9 +9,9 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
-      post "registration", to: "users#create"
+      post "registration", to: "users#registration"
       post "sessions", to: "sessions#create"
-      resources :users, only: [ :index, :show, :update, :destroy ]
+      resources :users
     end
   end
 
