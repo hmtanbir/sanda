@@ -22,7 +22,7 @@ RSpec.describe "TestController", type: :request do
     it "returns not found if no token is provided" do
       get "/test"
       expect(response).to have_http_status(:not_found)
-      expect(json_response["message"]).to eq(I18n.t("token.not_found"))
+      expect(json_response["message"]).to eq(I18n.t("api.errors.token.not_found"))
     end
 
     it "returns unauthorized if token is invalid" do
@@ -30,7 +30,7 @@ RSpec.describe "TestController", type: :request do
       get "/test", headers: { "Authorization" => "Bearer badtoken" }
 
       expect(response).to have_http_status(:unauthorized)
-      expect(json_response["message"]).to eq(I18n.t("token.invalid"))
+      expect(json_response["message"]).to eq(I18n.t("api.errors.token.invalid"))
     end
   end
 
