@@ -33,7 +33,7 @@ RSpec.describe "Api::V1::SessionsController", type: :request do
 
         expect(response).to have_http_status(:not_found)
         json = JSON.parse(response.body)
-        expect(json["message"]).to eq(I18n.t("api.errors.invalid_email"))
+        expect(json["message"]).to eq(I18n.t("api.errors.sessions.invalid_email"))
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe "Api::V1::SessionsController", type: :request do
 
         expect(response).to have_http_status(:unauthorized)
         json = JSON.parse(response.body)
-        expect(json["message"]).to eq(I18n.t("api.errors.invalid_password"))
+        expect(json["message"]).to eq(I18n.t("api.errors.sessions.invalid_password"))
       end
     end
   end

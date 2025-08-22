@@ -52,12 +52,12 @@ class ApplicationController < ActionController::API
   def authenticate_request
     header = request.headers["Authorization"]
     token = header.split(" ").last if header
-    render_json_response(:not_found, I18n.t("token.not_found")) and return if token.nil?
+    render_json_response(:not_found, I18n.t("api.errors.token.not_found")) and return if token.nil?
 
     begin
       decoded = JsonWebToken.decode(token)
-      render_json_response(:unauthorized, I18n.t("token.invalid")) and return if decoded.nil?
-      @current_user = RedisUserService.new(decoded[:user_id]).get_user_data
+      render_json_response(:unauthorized, I18n.t("api.errors.token.invalid")) and return if decoded.nil?
+      @current_user ||= User.find(decoded[:user_id])
     rescue StandardError => e
       handle_record_not_found(e)
     end
@@ -65,5 +65,9 @@ class ApplicationController < ActionController::API
 
   def user_not_authorized
     render_json_response(:forbidden, I18n.t("api.errors.unauthorized"))
+  end
+
+  def serialized_data(data)
+    ActiveModelSerializers::SerializableResource.new(data).serializable_hash
   end
 end

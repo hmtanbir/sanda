@@ -59,6 +59,7 @@ gem "dotenv-rails"
 
 group :development do
   gem "pry-rails"
+  gem "bullet"
 end
 
 group :development, :test do
