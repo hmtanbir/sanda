@@ -60,6 +60,7 @@ gem "dotenv-rails"
 group :development do
   gem "pry-rails"
   gem "bullet"
+  gem 'brakeman', require: false
 end
 
 group :development, :test do
