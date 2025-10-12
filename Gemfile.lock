@@ -83,6 +83,7 @@ GEM
     base64 (0.3.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
+    bcrypt_pbkdf (1.1.1-arm64-darwin)
     benchmark (0.4.1)
     bigdecimal (3.2.2)
     bootsnap (1.18.6)
@@ -179,7 +180,6 @@ GEM
     minitest (5.25.5)
     msgpack (1.8.0)
     mutex_m (0.3.0)
-    mysql2 (0.5.6)
     net-imap (0.5.9)
       date
       net-protocol
@@ -203,6 +203,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.9-arm-linux-musl)
       racc (~> 1.4)
+    nokogiri (1.18.9-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.9-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-gnu)
@@ -214,7 +216,13 @@ GEM
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
-    pg (1.5.9)
+    pg (1.6.2)
+    pg (1.6.2-aarch64-linux)
+    pg (1.6.2-aarch64-linux-musl)
+    pg (1.6.2-arm64-darwin)
+    pg (1.6.2-x86_64-darwin)
+    pg (1.6.2-x86_64-linux)
+    pg (1.6.2-x86_64-linux-musl)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -377,6 +385,7 @@ GEM
     thor (1.4.0)
     thruster (0.1.14)
     thruster (0.1.14-aarch64-linux)
+    thruster (0.1.14-arm64-darwin)
     thruster (0.1.14-x86_64-darwin)
     thruster (0.1.14-x86_64-linux)
     timeout (0.4.3)
@@ -407,6 +416,7 @@ PLATFORMS
   aarch64-linux-musl
   arm-linux-gnu
   arm-linux-musl
+  arm64-darwin-22
   x86_64-darwin-24
   x86_64-linux
   x86_64-linux-gnu
@@ -427,8 +437,7 @@ DEPENDENCIES
   jwt
   kamal
   mutex_m
-  mysql2 (~> 0.5)
-  pg (~> 1.1)
+  pg (~> 1.6.2)
   pry-rails
   puma (>= 5.0)
   pundit
