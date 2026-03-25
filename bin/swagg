@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+puts "Generating Swagger API documentation via Rswag..."
+puts "Running RSpec specs to generate the swagger.yaml file..."
+
+# Rswag requires the test environment to run the specs successfully
+success = system("RAILS_ENV=test bundle exec rake rswag:specs:swaggerize")
+
+if success
+  puts "\n✅ Documentation successfully generated!"
+  puts "You can view the OpenAPI syntax directly in: swagger/v1/swagger.yaml"
+  puts "Start your rails server (rails s) and visit http://localhost:3000/api-docs to see the UI."
+else
+  puts "\n❌ Failed to generate documentation. Please check the RSpec errors above."
+  exit 1
+end
