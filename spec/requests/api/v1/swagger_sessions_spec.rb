@@ -18,7 +18,7 @@ RSpec.describe 'API V1 Sessions', type: :request do
             required: %w[email password]
           }
         },
-        required: ['user']
+        required: [ 'user' ]
       }
 
       response '200', 'Logs in a user successfully' do
