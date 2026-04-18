@@ -9,4 +9,8 @@ class User < ApplicationRecord
 
   scope :all_users, -> { where(deleted_at: nil) }
   scope :role_users, ->(role) { where(role: role) }
+
+  def inactive?
+    deleted_at.present?
+  end
 end

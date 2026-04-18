@@ -50,4 +50,8 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Disable API Security Features for Tests
+  ENV["API_PAYLOAD_ENCRYPTION_ENABLED"] = "false"
+  ENV["API_GATEWAY_KEY"] = nil
 end

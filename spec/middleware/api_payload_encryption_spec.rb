@@ -2,7 +2,7 @@ require 'rails_helper'
 require_relative '../../app/middleware/api_payload_encryption'
 
 RSpec.describe ApiPayloadEncryption do
-  let(:app) { ->(env) { [ 200, { 'Content-Type' => 'application/json' }, [ response_body.to_json ] ] } }
+  let(:app) { ->(env) { [ 200, { 'content-type' => 'application/json' }, [ response_body.to_json ] ] } }
   let(:middleware) { described_class.new(app) }
   let(:response_body) { { message: "success" } }
   let(:encryption_key) { "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" }
@@ -118,7 +118,7 @@ RSpec.describe ApiPayloadEncryption do
       end
 
       context 'with non-json response' do
-        let(:app) { ->(env) { [ 200, { 'Content-Type' => 'text/html' }, [ "<html></html>" ] ] } }
+        let(:app) { ->(env) { [ 200, { 'content-type' => 'text/html' }, [ "<html></html>" ] ] } }
         let(:env) { Rack::MockRequest.env_for('/') }
 
         it 'does not encrypt the response' do

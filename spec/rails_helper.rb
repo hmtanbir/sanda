@@ -1,4 +1,13 @@
-# frozen_string_literal: true
+require 'simplecov'
+SimpleCov.start 'rails' do
+  # exclude coverage
+  add_filter 'app/channels'
+  add_filter 'app/helpers'
+  add_filter 'app/mailers'
+  add_filter 'app/jobs'
+  add_filter 'app/resources'
+  add_filter 'vendor/'
+end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
@@ -9,18 +18,8 @@ Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
-require 'simplecov'
 require 'webmock/rspec'
 
-SimpleCov.start 'rails' do
-  # exclude coverage
-  add_filter 'app/channels'
-  add_filter 'app/helpers'
-  add_filter 'app/mailers'
-  add_filter 'app/jobs'
-  add_filter 'app/resources'
-  add_filter 'vendor/'
-end
 
 begin
   ActiveRecord::Migration.maintain_test_schema!

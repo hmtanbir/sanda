@@ -29,7 +29,7 @@ class ApiPayloadEncryption
             env["CONTENT_TYPE"] = "application/json"
           end
         rescue StandardError => e
-          return [ 400, { "Content-Type" => "application/json" }, [ { error: "Invalid encrypted payload", details: e.message }.to_json ] ]
+          return [ 400, { "content-type" => "application/json" }, [ { error: "Invalid encrypted payload", details: e.message }.to_json ] ]
         end
       end
     end
@@ -39,7 +39,7 @@ class ApiPayloadEncryption
 
     # 3. Encrypt outgoing response
     # We should only encrypt JSON responses so we don't accidentally encrypt files
-    content_type = headers["Content-Type"].to_s
+    content_type = headers["content-type"].to_s
     if content_type.include?("application/json")
       response_body = []
       response.each { |part| response_body << part }
@@ -53,12 +53,12 @@ class ApiPayloadEncryption
           encrypted_data = EncryptionService.encrypt(response_string)
           new_body = { data: encrypted_data }.to_json
 
-          headers["Content-Length"] = new_body.bytesize.to_s
-          headers["Content-Type"] = "application/json; charset=utf-8"
+          headers["content-length"] = new_body.bytesize.to_s
+          headers["content-type"] = "application/json; charset=utf-8"
 
           response = [ new_body ]
         rescue StandardError => e
-          return [ 500, { "Content-Type" => "application/json" }, [ { error: "Internal Server Error during encryption" }.to_json ] ]
+          return [ 500, { "content-type" => "application/json" }, [ { error: "Internal Server Error during encryption" }.to_json ] ]
         end
       end
     end
