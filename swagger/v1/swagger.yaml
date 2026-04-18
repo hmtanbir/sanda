@@ -1,0 +1,196 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/sessions":
+    post:
+      summary: Login
+      tags:
+      - Sessions
+      parameters: []
+      responses:
+        '200':
+          description: Logs in a user successfully
+        '401':
+          description: Invalid password
+        '404':
+          description: Invalid email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: user@example.com
+                    password:
+                      type: string
+                      example: password123
+                  required:
+                  - email
+                  - password
+              required:
+              - user
+  "/api/v1/registration":
+    post:
+      summary: Registers a new user
+      tags:
+      - Registration
+      parameters: []
+      responses:
+        '201':
+          description: Created successfully
+        '422':
+          description: Validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: John Doe
+                    email:
+                      type: string
+                      example: john@example.com
+                    password:
+                      type: string
+                      example: password123
+                    role:
+                      type: string
+                      example: user
+                  required:
+                  - name
+                  - email
+                  - password
+              required:
+              - user
+  "/api/v1/users":
+    get:
+      summary: Retrieves paginated users list
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: role
+        in: query
+        description: Role to filter by
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page number
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Number of items per page
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Users fetched successfully
+        '401':
+          description: Unauthorized
+  "/api/v1/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: User ID
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieves a user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: User fetched successfully
+        '404':
+          description: User not found
+    put:
+      summary: Updates a user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: User updated successfully
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Jane Doe
+                    email:
+                      type: string
+                      example: jane@example.com
+    patch:
+      summary: Updates a user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: User updated successfully
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Jane Doe
+                    email:
+                      type: string
+                      example: jane@example.com
+    delete:
+      summary: Deletes a user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: User deleted successfully
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
