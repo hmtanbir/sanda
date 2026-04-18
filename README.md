@@ -12,7 +12,7 @@ Start your next big API project with Sanda, focus on building business logic, an
 
 Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
 
-- [Sanda - Zero Config API Boilerplate with Ruby on Rails](#hydra---zero-config-api-boilerplate-with-ruby-on-rails)
+- [Sanda - Zero Config API Boilerplate with Ruby on Rails](#sanda---zero-config-api-boilerplate-with-ruby-on-rails)
     - [Requirements](#requirements)
     - [Getting Started](#getting-started)
         - [Without Docker (Simple)](#without-docker-simple)
@@ -40,6 +40,8 @@ Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
         - [Update a User (User/Admin Ability Required)](#update-a-user-useradmin-ability-required)
         - [Delete a User (Admin Ability Required)](#delete-a-user-admin-ability-required)
     - [Notes](#notes)
+        - [API Gateway Key Verification](#api-gateway-key-verification)
+        - [API Payload Encryption](#api-payload-encryption)
         - [Default Admin Username and Password](#default-admin-username-and-password)
         - [Default Role for New Users](#default-role-for-new-users)
         - [Single Session or Multiple Session](#single-session-or-multiple-session)
@@ -749,6 +751,50 @@ For any unsuccessful attempt with an invalid `user id`, you will receive a 404 n
 ```
 
 ## Notes
+
+### API Gateway Key Verification
+
+Sanda supports API Gateway key verification. When enabled, all requests must include a valid key in the `x-api-gateway-key` header.
+
+To enable this, set the `API_GATEWAY_KEY` environment variable in your `.env` file:
+
+```env
+API_GATEWAY_KEY=your-secure-gateway-key
+```
+
+If this variable is set, any request without the matching header will receive a `403 Forbidden` response.
+
+### API Payload Encryption
+
+For enhanced security, Sanda supports End-to-End (E2E) API payload encryption using **AES-256-GCM**.
+
+#### How it works:
+1. **Request Encryption**: When enabled, the server expects incoming POST/PATCH/PUT payloads to be encrypted.
+2. **Response Encryption**: The server automatically encrypts all JSON responses.
+3. **Decryption**: The server decrypts the payload before processing and encrypts the response before sending it back.
+
+#### Configuration:
+Set the following environment variables in your `.env` file:
+
+```env
+API_PAYLOAD_ENCRYPTION_ENABLED=true
+API_ENCRYPTION_KEY=your-64-character-hex-key
+```
+
+> [!IMPORTANT]
+> The `API_ENCRYPTION_KEY` must be a 64-character hex string (32 bytes). If a shorter string is provided, it will be padded to 32 bytes automatically.
+
+#### Payload Structure:
+The encrypted payload should be a Base64 encoded string of:
+`IV (12 bytes) + Ciphertext + AuthTag (16 bytes)`
+
+When sending an encrypted request, you can wrap it in a JSON object:
+```json
+{
+  "payload": "BASE64_ENCRYPTED_STRING"
+}
+```
+Or send the raw encrypted Base64 string directly.
 
 ### Default Admin Username and Password
 

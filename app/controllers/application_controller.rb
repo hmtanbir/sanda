@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include Pundit::Authorization
+  before_action :verify_api_gateway_key
   before_action :authenticate_request
 
   attr_reader :current_user
@@ -55,9 +56,23 @@ class ApplicationController < ActionController::API
     render_json_response(:not_found, I18n.t("api.errors.token.not_found")) and return if token.nil?
 
     begin
+      # If encryption is enabled, try to decrypt the token first.
+      # The user might be sending the entire encrypted response from the login API.
+      if EncryptionService.encryption_enabled?
+        begin
+          decrypted = EncryptionService.decrypt(token)
+          parsed = JSON.parse(decrypted)
+          # The session API returns { status: 200, message: "...", data: { token: "..." } }
+          token = parsed.dig("data", "token") if parsed.is_a?(Hash) && parsed.dig("data", "token").present?
+        rescue StandardError
+          # If decryption or parsing fails, we assume it's already a raw JWT
+        end
+      end
+
       decoded = JsonWebToken.decode(token)
       render_json_response(:unauthorized, I18n.t("api.errors.token.invalid")) and return if decoded.nil?
       @current_user ||= User.find(decoded[:user_id])
+      render_json_response(:unauthorized, I18n.t("api.errors.sessions.inactive_user")) and return if @current_user.inactive?
     rescue StandardError => e
       handle_record_not_found(e)
     end
@@ -67,7 +82,23 @@ class ApplicationController < ActionController::API
     render_json_response(:forbidden, I18n.t("api.errors.unauthorized"))
   end
 
-  def serialized_data(data)
-    ActiveModelSerializers::SerializableResource.new(data).serializable_hash
+  def serialized_data(data, options = {})
+    return data if data.is_a?(Hash) || data.is_a?(Array)
+    ActiveModelSerializers::SerializableResource.new(data, options).serializable_hash
+  end
+
+  def verify_api_gateway_key
+    expected_key = ENV["API_GATEWAY_KEY"]
+    return if expected_key.blank?
+
+    provided_key = request.headers["x-api-gateway-key"]
+
+    if provided_key != expected_key
+      render_json_response(:forbidden, "Invalid API Gateway Key")
+    end
+  end
+
+  def cast_boolean(value)
+    ActiveModel::Type::Boolean.new.cast(value)
   end
 end
