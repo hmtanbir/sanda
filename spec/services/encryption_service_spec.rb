@@ -13,7 +13,7 @@ RSpec.describe EncryptionService do
     it 'encrypts and decrypts correctly' do
       encrypted = described_class.encrypt(plain_text)
       expect(encrypted).not_to eq(plain_text)
-      
+
       decrypted = described_class.decrypt(encrypted)
       expect(decrypted).to eq(plain_text)
     end

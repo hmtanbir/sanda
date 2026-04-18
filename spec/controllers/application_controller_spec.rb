@@ -25,7 +25,7 @@ RSpec.describe ApplicationController, type: :controller do
   describe '#authenticate_request' do
     context 'when encryption is enabled' do
       let(:hex_key) { "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" }
-      
+
       before do
         allow(ENV).to receive(:[]).with('API_PAYLOAD_ENCRYPTION_ENABLED').and_return('true')
         allow(ENV).to receive(:[]).with('API_ENCRYPTION_KEY').and_return(hex_key)
@@ -35,10 +35,10 @@ RSpec.describe ApplicationController, type: :controller do
         # Create an encrypted payload containing a JSON with the token
         payload = { data: { token: token } }.to_json
         encrypted_token = EncryptionService.encrypt(payload)
-        
+
         request.headers['Authorization'] = "Bearer #{encrypted_token}"
         get :index
-        
+
         expect(response).to have_http_status(:ok)
         expect(assigns(:current_user)).to eq(user)
       end
@@ -46,7 +46,7 @@ RSpec.describe ApplicationController, type: :controller do
       it 'falls back to raw token if decryption fails' do
         request.headers['Authorization'] = "Bearer #{token}"
         get :index
-        
+
         expect(response).to have_http_status(:ok)
         expect(assigns(:current_user)).to eq(user)
       end
