@@ -28,7 +28,15 @@ RSpec.configure do |config|
           url: 'https://{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'api.bdmade.dev'
+            }
+          }
+        },
+        {
+          url: 'http://{defaultHost}',
+          variables: {
+            defaultHost: {
+              default: 'localhost:3000'
             }
           }
         }
@@ -39,7 +47,7 @@ RSpec.configure do |config|
             type: :http,
             scheme: :bearer
           },
-          api_gateway_key: {
+          x_api_gateway_key: {
             type: :apiKey,
             name: 'x-api-gateway-key',
             in: :header

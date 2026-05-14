@@ -135,7 +135,7 @@ RSpec.describe "Api::V1::UsersController", type: :request do
             params: { user: { name: "" } },
             headers: user_auth_headers
 
-      expect(response).to have_http_status(:internal_server_error)
+      expect(response).to have_http_status(:unprocessable_content)
     end
 
     it "could not update other user information" do
