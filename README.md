@@ -55,6 +55,7 @@ Sanda works with Ruby on Rails 8.x., PostgresSQL 14.x, Redis 7.x
         - [Create Protected Routes](#create-protected-routes)
         - [Create Authorization Policy](#create-authorization-policy)
         - [Test Protected Routes](#test-protected-routes)
+        - [Generate API Documentation](#generate-api-documentation)
 
 ## Requirements
 
@@ -1036,5 +1037,13 @@ The response will be something like this.
 ```
 
 Great! you have learned how to create your protected API endpoint using Ruby on Rails and Sanda!
+
+### Generate API Documentation
+
+To generate API documentation, you can use the following command:
+
+```shell
+bundle exec bin/swagg
+```
 
 Now you know everything to start creating your next big API project with Ruby on Rails our powerful boilerplate project called Sanda. Enjoy!

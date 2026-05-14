@@ -85,3 +85,7 @@ group :test do
   gem "shoulda-matchers"
   gem "webmock"
 end
+
+gem "rswag-api", "~> 2.17"
+gem "rswag-ui", "~> 2.17"
+gem "rswag-specs", "~> 2.17"
