@@ -34,13 +34,13 @@ class ApplicationController < ActionController::API
   end
 
   def render_json_response(status, message = "", data = nil, extra = {})
-    status_code = Rack::Utils.status_code(status)
+    status = Rack::Utils::SYMBOL_TO_STATUS_CODE[status] if status.is_a? Symbol
     response = {
-      status: status_code,
+      status: status,
       message: message,
       data: data
     }.merge(extra)
-    render json: response, status: status_code
+    render json: response, status: status
   end
 
   def pagination_info
@@ -93,7 +93,7 @@ class ApplicationController < ActionController::API
 
     provided_key = request.headers["x-api-gateway-key"]
 
-    if provided_key != expected_key
+    if expected_key.blank? || provided_key != expected_key
       render_json_response(:forbidden, "Invalid API Gateway Key")
     end
   end
