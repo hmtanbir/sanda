@@ -28,6 +28,10 @@ Rails.application.configure do
     config.cache_store = :memory_store
   end
 
+  # Replace the default in-process and non-durable queuing backend for Active Job.
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = { database: { writing: :queue } }
+
   # Ensure Solid Cache connects to the cache database schema
   config.solid_cache.connects_to = { database: { writing: :cache } }
 
