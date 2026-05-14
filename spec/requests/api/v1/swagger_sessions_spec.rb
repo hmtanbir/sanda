@@ -4,6 +4,7 @@ RSpec.describe 'API V1 Sessions', type: :request do
   path '/api/v1/sessions' do
     post 'Login' do
       tags 'Sessions'
+      security [ api_gateway_key: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :user_params, in: :body, schema: {

@@ -7,6 +7,7 @@ RSpec.describe 'API V1 Users', type: :request do
   path '/api/v1/registration' do
     post 'Registers a new user' do
       tags 'Registration'
+      security [ api_gateway_key: [] ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :user_params, in: :body, schema: {
@@ -41,7 +42,7 @@ RSpec.describe 'API V1 Users', type: :request do
   path '/api/v1/users' do
     get 'Retrieves paginated users list' do
       tags 'Users'
-      security [ bearer_auth: [] ]
+      security [ { bearer_auth: [], api_gateway_key: [] } ]
       produces 'application/json'
       parameter name: :role, in: :query, type: :string, description: 'Role to filter by', required: false
       parameter name: :page, in: :query, type: :integer, description: 'Page number', required: false
@@ -67,7 +68,7 @@ RSpec.describe 'API V1 Users', type: :request do
 
     get 'Retrieves a user' do
       tags 'Users'
-      security [ bearer_auth: [] ]
+      security [ { bearer_auth: [], api_gateway_key: [] } ]
       produces 'application/json'
 
       response '200', 'User fetched successfully' do
@@ -85,7 +86,7 @@ RSpec.describe 'API V1 Users', type: :request do
 
     put 'Updates a user' do
       tags 'Users'
-      security [ bearer_auth: [] ]
+      security [ { bearer_auth: [], api_gateway_key: [] } ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :user_params, in: :body, schema: {
@@ -111,7 +112,7 @@ RSpec.describe 'API V1 Users', type: :request do
 
     patch 'Updates a user' do
       tags 'Users'
-      security [ bearer_auth: [] ]
+      security [ { bearer_auth: [], api_gateway_key: [] } ]
       consumes 'application/json'
       produces 'application/json'
       parameter name: :user_params, in: :body, schema: {
@@ -137,7 +138,7 @@ RSpec.describe 'API V1 Users', type: :request do
 
     delete 'Deletes a user' do
       tags 'Users'
-      security [ bearer_auth: [] ]
+      security [ { bearer_auth: [], api_gateway_key: [] } ]
       produces 'application/json'
 
       response '200', 'User deleted successfully' do

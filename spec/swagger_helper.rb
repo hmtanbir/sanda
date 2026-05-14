@@ -22,6 +22,7 @@ RSpec.configure do |config|
         version: 'v1'
       },
       paths: {},
+      security: [ { bearer_auth: [] }, { api_gateway_key: [] } ],
       servers: [
         {
           url: 'https://{defaultHost}',
@@ -37,6 +38,11 @@ RSpec.configure do |config|
           bearer_auth: {
             type: :http,
             scheme: :bearer
+          },
+          api_gateway_key: {
+            type: :apiKey,
+            name: 'x-api-gateway-key',
+            in: :header
           }
         }
       }
