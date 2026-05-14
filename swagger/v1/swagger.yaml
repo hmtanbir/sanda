@@ -4,48 +4,56 @@ info:
   title: API V1
   version: v1
 paths:
-  "/api/v1/sessions":
-    post:
-      summary: Login
-      tags:
-      - Sessions
-      parameters: []
-      responses:
-        '200':
-          description: Logs in a user successfully
-        '401':
-          description: Invalid password
-        '404':
-          description: Invalid email
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user:
-                  type: object
-                  properties:
-                    email:
-                      type: string
-                      example: user@example.com
-                    password:
-                      type: string
-                      example: password123
-                  required:
-                  - email
-                  - password
-              required:
-              - user
   "/api/v1/registration":
     post:
       summary: Registers a new user
       tags:
       - Registration
+      security:
+      - x_api_gateway_key: []
       parameters: []
       responses:
         '201':
           description: Created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: Successfully data created
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: John Doe
+                      email:
+                        type: string
+                        example: john.doe@example.com
+                      role:
+                        type: string
+                        example: user
+                      status:
+                        type: string
+                        nullable: true
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        nullable: true
         '422':
           description: Validation errors
       requestBody:
@@ -66,6 +74,9 @@ paths:
                     password:
                       type: string
                       example: password123
+                    status:
+                      type: string
+                      example: active
                     role:
                       type: string
                       example: user
@@ -82,6 +93,7 @@ paths:
       - Users
       security:
       - bearer_auth: []
+        x_api_gateway_key: []
       parameters:
       - name: role
         in: query
@@ -104,8 +116,188 @@ paths:
       responses:
         '200':
           description: Users fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Successfully data fetched
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Alice
+                        email:
+                          type: string
+                          example: alice@example.com
+                        role:
+                          type: string
+                          example: user
+                        status:
+                          type: string
+                          nullable: true
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                  pagination:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      per_page:
+                        type: integer
+                        example: 10
+                      total_pages:
+                        type: integer
+                        example: 1
+                      total_count:
+                        type: integer
+                        example: 3
         '401':
           description: Unauthorized
+  "/api/v1/users/me":
+    get:
+      summary: Retrieves current logged in user details
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+        x_api_gateway_key: []
+      responses:
+        '200':
+          description: User details fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Successfully data fetched
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Alice
+                      email:
+                        type: string
+                        example: alice@example.com
+                      role:
+                        type: string
+                        example: user
+                      status:
+                        type: string
+                        nullable: true
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        nullable: true
+        '401':
+          description: Unauthorized
+    patch:
+      summary: Updates current logged in user details
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+        x_api_gateway_key: []
+      parameters: []
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Successfully data updated
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Jane Patched
+                      email:
+                        type: string
+                        example: jane@example.com
+                      role:
+                        type: string
+                        example: user
+                      status:
+                        type: string
+                        nullable: true
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        nullable: true
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Jane Doe
+                    email:
+                      type: string
+                      example: jane@example.com
+                    status:
+                      type: string
+                      example: active
   "/api/v1/users/{id}":
     parameters:
     - name: id
@@ -120,9 +312,49 @@ paths:
       - Users
       security:
       - bearer_auth: []
+        x_api_gateway_key: []
       responses:
         '200':
           description: User fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Successfully data fetched
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Alice
+                      email:
+                        type: string
+                        example: alice@example.com
+                      role:
+                        type: string
+                        example: user
+                      status:
+                        type: string
+                        nullable: true
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        nullable: true
         '404':
           description: User not found
     put:
@@ -131,10 +363,50 @@ paths:
       - Users
       security:
       - bearer_auth: []
+        x_api_gateway_key: []
       parameters: []
       responses:
         '200':
           description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Successfully data updated
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Jane Updated
+                      email:
+                        type: string
+                        example: jane@example.com
+                      role:
+                        type: string
+                        example: user
+                      status:
+                        type: string
+                        nullable: true
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        nullable: true
       requestBody:
         content:
           application/json:
@@ -150,16 +422,59 @@ paths:
                     email:
                       type: string
                       example: jane@example.com
+                    status:
+                      type: string
+                      example: active
     patch:
       summary: Updates a user
       tags:
       - Users
       security:
       - bearer_auth: []
+        x_api_gateway_key: []
       parameters: []
       responses:
         '200':
           description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Successfully data updated
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Jane Patched
+                      email:
+                        type: string
+                        example: jane@example.com
+                      role:
+                        type: string
+                        example: user
+                      status:
+                        type: string
+                        nullable: true
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        nullable: true
       requestBody:
         content:
           application/json:
@@ -175,22 +490,37 @@ paths:
                     email:
                       type: string
                       example: jane@example.com
+                    status:
+                      type: string
+                      example: active
     delete:
       summary: Deletes a user
       tags:
       - Users
       security:
       - bearer_auth: []
+        x_api_gateway_key: []
       responses:
         '200':
           description: User deleted successfully
+security:
+- bearer_auth: []
+- api_gateway_key: []
 servers:
 - url: https://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: api.bdmade.dev
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
 components:
   securitySchemes:
     bearer_auth:
       type: http
       scheme: bearer
+    x_api_gateway_key:
+      type: apiKey
+      name: x-api-gateway-key
+      in: header
