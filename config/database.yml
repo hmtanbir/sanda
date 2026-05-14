@@ -25,15 +25,41 @@ default: &default
 
 
 development:
-  <<: *default
-  database: <%= "#{ENV["DB_NAME"]}_development" %>
+  primary: &primary_development
+    <<: *default
+    database: <%= "#{ENV["DB_NAME"]}_development" %>
+  cache:
+    <<: *primary_development
+    database: <%= "#{ENV["DB_NAME"]}_development_cache" %>
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_development
+    database: <%= "#{ENV["DB_NAME"]}_development_queue" %>
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_development
+    database: <%= "#{ENV["DB_NAME"]}_development_cable" %>
+    migrations_paths: db/cable_migrate
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: <%= "#{ENV["DB_NAME"]}_test" %>
+  primary: &primary_test
+    <<: *default
+    database: <%= "#{ENV["DB_NAME"]}_test" %>
+  cache:
+    <<: *primary_test
+    database: <%= "#{ENV["DB_NAME"]}_test_cache" %>
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_test
+    database: <%= "#{ENV["DB_NAME"]}_test_queue" %>
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_test
+    database: <%= "#{ENV["DB_NAME"]}_test_cable" %>
+    migrations_paths: db/cable_migrate
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
