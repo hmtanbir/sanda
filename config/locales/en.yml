@@ -39,6 +39,7 @@ en:
       sessions:
         invalid_email: "Invalid email"
         invalid_password: "Invalid password"
+        inactive_user: "User account is inactive or deleted"
       token:
         invalid: "Invalid token"
         not_found: "Token data not found"
