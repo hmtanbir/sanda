@@ -42,7 +42,7 @@ RSpec.describe "TestController", type: :request do
 
     it "handles RecordInvalid" do
       get "/test/invalid_record", headers: auth_headers
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
     end
 
     it "handles StandardError" do

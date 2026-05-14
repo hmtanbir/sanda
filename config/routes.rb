@@ -13,7 +13,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       post "registration", to: "users#registration"
       post "sessions", to: "sessions#create"
-      resources :users
+      resources :users do
+        get :me, on: :collection
+        patch :me, on: :collection
+      end
     end
   end
 

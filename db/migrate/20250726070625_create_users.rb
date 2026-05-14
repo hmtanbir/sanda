@@ -4,6 +4,8 @@ class CreateUsers < ActiveRecord::Migration[8.0]
       t.string :name, null: false
       t.string :email, null: false
       t.string :password_digest
+      t.integer :role, default: 1
+      t.integer :status, default: 1
       t.datetime :deleted_at
 
       t.timestamps

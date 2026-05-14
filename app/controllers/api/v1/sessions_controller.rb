@@ -5,6 +5,7 @@ class Api::V1::SessionsController < ApplicationController
     user = User.find_by(email: user_params.dig(:email), deleted_at: nil)
 
     render_json_response(:not_found, I18n.t("api.errors.sessions.invalid_email")) and return unless user
+    render_json_response(:unauthorized, I18n.t("api.errors.sessions.inactive_user")) and return if user.inactive?
 
     if user&.authenticate(user_params.dig(:password))
       token = JsonWebToken.encode(user_id: user.id)

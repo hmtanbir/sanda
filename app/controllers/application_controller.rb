@@ -93,7 +93,7 @@ class ApplicationController < ActionController::API
 
     provided_key = request.headers["x-api-gateway-key"]
 
-    if provided_key != expected_key
+    if expected_key.blank? || provided_key != expected_key
       render_json_response(:forbidden, "Invalid API Gateway Key")
     end
   end
