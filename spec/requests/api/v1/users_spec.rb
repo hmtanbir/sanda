@@ -194,7 +194,7 @@ RSpec.describe "Api::V1::UsersController", type: :request do
     it "returns error on invalid user data" do
       post "/api/v1/registration", params: { user: user_params.merge(name: "") }
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
       expect(JSON.parse(response.body)["message"]).to include("Name can't be blank")
     end
   end

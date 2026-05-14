@@ -1,17 +1,18 @@
 class User < ApplicationRecord
-  enum :role, YAML.load_file(Rails.root.join("config/data/roles.yml")).symbolize_keys.freeze
-  enum :status, YAML.load_file(Rails.root.join("config/data/statuses.yml")).symbolize_keys.freeze
+  enum :role, YAML.load_file(Rails.root.join("config/data/roles.yml")).symbolize_keys.freeze, default: :user
+  enum :status, YAML.load_file(Rails.root.join("config/data/statuses.yml")).symbolize_keys.freeze, default: :active
   has_secure_password
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 6 }
   validates :role, presence: true
+  validates :status, presence: true
 
   scope :all_users, -> { where(deleted_at: nil) }
   scope :role_users, ->(role) { where(role: role) }
 
   def inactive?
-    deleted_at.present?
+    deleted_at.present? || status == "inactive"
   end
 end

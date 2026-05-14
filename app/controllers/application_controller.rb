@@ -34,13 +34,13 @@ class ApplicationController < ActionController::API
   end
 
   def render_json_response(status, message = "", data = nil, extra = {})
-    status = Rack::Utils::SYMBOL_TO_STATUS_CODE[status] if status.is_a? Symbol
+    status_code = Rack::Utils.status_code(status)
     response = {
-      status: status,
+      status: status_code,
       message: message,
       data: data
     }.merge(extra)
-    render json: response, status: status
+    render json: response, status: status_code
   end
 
   def pagination_info

@@ -1,42 +1,54 @@
-require 'swagger_helper'
+require 'rails_helper'
 
-RSpec.describe 'API V1 Sessions', type: :request do
-  path '/api/v1/sessions' do
-    post 'Login' do
-      tags 'Sessions'
-      security [ api_gateway_key: [] ]
-      consumes 'application/json'
-      produces 'application/json'
-      parameter name: :user_params, in: :body, schema: {
-        type: :object,
-        properties: {
+RSpec.describe "Api::V1::SessionsController", type: :request do
+  describe "POST /api/v1/sessions" do
+    let(:user) { create(:user, password: "secure123") }
+    let(:url) { "/api/v1/sessions" }
+
+    context "with valid credentials" do
+      it "returns a valid JWT token" do
+        post url, params: {
           user: {
-            type: :object,
-            properties: {
-              email: { type: :string, example: 'user@example.com' },
-              password: { type: :string, example: 'password123' }
-            },
-            required: %w[email password]
+            email: user.email,
+            password: "secure123"
           }
-        },
-        required: [ 'user' ]
-      }
+        }
 
-      response '200', 'Logs in a user successfully' do
-        let(:user_record) { create(:user, email: 'test@example.com', password: 'password123') }
-        let(:user_params) { { user: { email: user_record.email, password: 'password123' } } }
-        run_test!
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+
+        expect(json["data"]).to have_key("token")
+        expect(json["data"]["token"]).to be_a(String)
       end
+    end
 
-      response '401', 'Invalid password' do
-        let(:user_record) { create(:user, email: 'test@example.com', password: 'password123') }
-        let(:user_params) { { user: { email: user_record.email, password: 'wrongpassword' } } }
-        run_test!
+    context "with invalid email" do
+      it "returns not found with error message" do
+        post url, params: {
+          user: {
+            email: "nonexistent@example.com",
+            password: "anything"
+          }
+        }
+
+        expect(response).to have_http_status(:not_found)
+        json = JSON.parse(response.body)
+        expect(json["message"]).to eq(I18n.t("api.errors.sessions.invalid_email"))
       end
+    end
 
-      response '404', 'Invalid email' do
-        let(:user_params) { { user: { email: 'nonexistent@example.com', password: 'password123' } } }
-        run_test!
+    context "with invalid password" do
+      it "returns unauthorized with error message" do
+        post url, params: {
+          user: {
+            email: user.email,
+            password: "wrongpassword"
+          }
+        }
+
+        expect(response).to have_http_status(:unauthorized)
+        json = JSON.parse(response.body)
+        expect(json["message"]).to eq(I18n.t("api.errors.sessions.invalid_password"))
       end
     end
   end
