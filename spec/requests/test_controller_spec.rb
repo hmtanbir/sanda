@@ -35,19 +35,31 @@ RSpec.describe "TestController", type: :request do
   end
 
   describe "error handling" do
+    let(:slack_webhook_url) { "https://hooks.slack.com/services/errors" }
+
+    before do
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with("SLACK_ERROR_WEBHOOK_URL").and_return(slack_webhook_url)
+      stub_request(:post, slack_webhook_url).to_return(status: 200, body: "ok")
+    end
+
     it "handles RecordNotFound" do
       get "/test/not_found", headers: auth_headers
       expect(response).to have_http_status(:not_found)
+      expect(WebMock).not_to have_requested(:post, slack_webhook_url)
     end
 
     it "handles RecordInvalid" do
       get "/test/invalid_record", headers: auth_headers
       expect(response).to have_http_status(:unprocessable_content)
+      expect(WebMock).not_to have_requested(:post, slack_webhook_url)
     end
 
-    it "handles StandardError" do
+    it "handles StandardError and sends a Slack notification" do
       get "/test/error", headers: auth_headers
       expect(response).to have_http_status(:internal_server_error)
+      expect(WebMock).to have_requested(:post, slack_webhook_url)
+        .with(body: /Message: Something went wrong/)
     end
   end
 
