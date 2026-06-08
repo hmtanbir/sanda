@@ -183,19 +183,47 @@ RSpec.describe "Api::V1::UsersController", type: :request do
     end
   end
 
+  describe "POST /api/v1/users" do
+    context "when authenticated as admin" do
+      it "creates a new user" do
+        post "/api/v1/users", params: { user: user_params.merge(email: "admin_created@example.com") }, headers: admin_auth_headers
+        expect(response).to have_http_status(:created)
+        expect(JSON.parse(response.body)["message"]).to eq(I18n.t("api.success.created"))
+      end
+
+      it "returns error on invalid user data" do
+        post "/api/v1/users", params: { user: user_params.merge(name: "") }, headers: admin_auth_headers
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+    end
+  end
+
   describe "POST /api/v1/registration" do
-    it "creates a new user and stores it in Database" do
+    let(:slack_webhook_url) { "https://hooks.slack.com/services/registration" }
+
+    before do
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with("SLACK_REGISTRATION_WEBHOOK_URL").and_return(slack_webhook_url)
+      stub_request(:post, slack_webhook_url).to_return(status: 200, body: "ok")
+    end
+
+    it "creates a new user, stores it in Database, and sends a Slack notification" do
       post "/api/v1/registration", params: { user: user_params }
 
       expect(response).to have_http_status(:created)
       expect(JSON.parse(response.body)["message"]).to eq(I18n.t("api.success.created"))
+
+      expect(WebMock).to have_requested(:post, slack_webhook_url)
+        .with(body: /New user registered: John Doe/)
     end
 
-    it "returns error on invalid user data" do
+    it "returns error on invalid user data and does not send a Slack notification" do
       post "/api/v1/registration", params: { user: user_params.merge(name: "") }
 
       expect(response).to have_http_status(:unprocessable_content)
       expect(JSON.parse(response.body)["message"]).to include("Name can't be blank")
+
+      expect(WebMock).not_to have_requested(:post, slack_webhook_url)
     end
   end
 end

@@ -54,6 +54,10 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.before(:each) do
+    stub_request(:post, /hooks.slack.com/).to_return(status: 200, body: "ok")
+  end
+
   config.before(:all) do
     FactoryBot.reload
   end

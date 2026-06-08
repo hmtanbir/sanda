@@ -48,7 +48,17 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def registration
-    create
+    user = User.new(user_params)
+    user.role = :user if user.role.nil?
+    if user.save
+      # Send Slack notification for user registration
+      slack_message = "New user registered: #{user.name} (#{user.email})"
+      SlackNotification.notify(slack_message, event: :registration)
+
+      render_json_response(:created, I18n.t("api.success.created"), serialized_data(user))
+    else
+      render_json_response(:unprocessable_content, user.errors.full_messages)
+    end
   end
 
   private

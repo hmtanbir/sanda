@@ -30,6 +30,13 @@ class ApplicationController < ActionController::API
   def handle_exception(exception)
     logger.error exception.message
     logger.error exception.backtrace.join "\n"
+
+    # Send Slack notification for errors
+    slack_message = "[Error] Exception occurred in #{request.method} #{request.original_url}\n" \
+                    "Message: #{exception.message}\n" \
+                    "Backtrace:\n#{exception.backtrace&.first(5)&.join("\n")}"
+    SlackNotification.notify(slack_message, event: :error)
+
     render_json_response(:internal_server_error, exception.message)
   end
 
