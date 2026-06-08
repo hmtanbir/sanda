@@ -91,7 +91,7 @@ RSpec.describe "Api::V1::UsersController", type: :request do
         get "/api/v1/users/0", headers: admin_auth_headers
 
         expect(response).to have_http_status(:not_found)
-        json = JSON.parse(response.body)
+         JSON.parse(response.body)
       end
     end
 
