@@ -86,7 +86,8 @@ Then follow the process using either Docker or without Docker (simple).
 1. Install project gems
 
 ```shell
-bundle install --path=vendor
+bundle config set path 'vendor'
+bundle  install
 ```
 
 2. Prepare .env file
