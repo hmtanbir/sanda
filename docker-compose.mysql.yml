@@ -4,35 +4,37 @@ services:
     container_name: sanda_mysql
     restart: always
     environment:
-      MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-sanda}_development
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 3s
       timeout: 5s
       retries: 5
     ports:
-      - "3305:3306" # Host port 3305 -> Container port 3306
+      - "3306:3306"
     volumes:
       - mysqldata:/var/lib/mysql
     networks:
-      - app-network
+      - sanda-network
   redis:
-    image: redis:7.4.5-alpine3.21
+    image: redis:alpine
     container_name: sanda_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     restart: always
-    ports:
-      - "6378:6379"  # Host port 6379 -> Container port 6379
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_DB: ${REDIS_DB:-0}
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: [ "CMD-SHELL", "REDISCLI_AUTH=$$REDIS_PASSWORD redis-cli ping | grep PONG" ]
       interval: 3s
       timeout: 5s
       retries: 5
     networks:
-      - app-network
+      - sanda-network
     volumes:
       - redisdata:/data
-  app:
+  api:
     build: .
     container_name: sanda
     depends_on:
@@ -40,17 +42,29 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
-    env_file:
-      - .env.mysql.docker
     ports:
-      - "3000:3000"
+      - ${APP_HOST_PORT:-3000}:3000
+    environment:
+      - DB_ADAPTER=mysql2
+      - DB_ENCODING=utf8mb4
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_POOL=5
+      - DB_NAME=${DB_NAME:-sanda}_development
+      - DB_USERNAME=root
+      - DB_PASSWORD=${DB_PASSWORD:-root}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=${REDIS_DB:-0}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     networks:
-      - app-network
+      - sanda-network
 
 volumes:
   mysqldata:
   redisdata:
 
 networks:
-  app-network:
+  sanda-network:
     driver: bridge
+
