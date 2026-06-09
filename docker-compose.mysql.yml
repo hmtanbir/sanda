@@ -43,7 +43,7 @@ services:
       mysql:
         condition: service_healthy
     ports:
-      - ${APP_HOST_PORT:-3000}:3000
+      - ${PORT:-3001}:3000
     environment:
       - DB_ADAPTER=mysql2
       - DB_ENCODING=utf8mb4
