@@ -1,57 +1,106 @@
 services:
   postgres:
-    image: postgres:14.15-alpine3.21
+    image: postgres:16-alpine
+    command: >
+      postgres 
+      -c shared_buffers=512MB
+      -c effective_cache_size=1G
+      -c work_mem=32MB
+      -c max_connections=100
     container_name: sanda_postgres
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5431:5432"
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-sanda}_development
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ 'CMD-SHELL', 'pg_isready -h localhost -U $$POSTGRES_USER -d $$POSTGRES_DB' ]
       interval: 3s
       timeout: 5s
       retries: 5
       start_period: 10s
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - app-network
+      - sanda-network
+    deploy:
+      resources:
+        limits:
+          cpus: "2.00"
+          memory: 2G
+        reservations:
+          cpus: "1.00"
+          memory: 1G
   redis:
-    image: redis:7.4.5-alpine3.21
+    image: redis:alpine
     container_name: sanda_redis
+    command: >
+      bash -c '
+      if [ -n "$REDIS_PASSWORD" ]; then
+        exec redis-server --requirepass "$REDIS_PASSWORD"
+      else
+        exec redis-server
+      fi
+      '
     restart: always
-    ports:
-      - "6378:6379"  # Host port 6379 -> Container port 6379
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_DB: ${REDIS_DB:-0}
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: [ "CMD-SHELL", "[ -z \"$$REDIS_PASSWORD\" ] && redis-cli ping | grep PONG || REDISCLI_AUTH=$$REDIS_PASSWORD redis-cli ping | grep PONG" ]
       interval: 3s
       timeout: 5s
       retries: 5
-    networks:
-      - app-network
     volumes:
-      - redisdata:/data
+      - redis_data:/data  
+    networks:
+      - sanda-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 768M
+        reservations:
+          cpus: "0.25"
+          memory: 256M  
   app:
     build: .
     container_name: sanda
     depends_on:
       redis:
-        condition: service_started
+        condition: service_healthy
       postgres:
         condition: service_healthy
-    env_file:
-      - .env.pg.docker
     ports:
-      - "3000:3000"
+      - ${APP_HOST_PORT:-3000}:3000
+    environment:
+      - DB_ADAPTER=postgresql
+      - DB_ENCODING=utf8
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_POOL=5
+      - DB_NAME=${DB_NAME:-sanda}_development
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=${REDIS_DB:-0}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     networks:
-      - app-network
+      - sanda-network
+    deploy:
+      resources:
+        limits:
+          cpus: "2.00"
+          memory: 1536M
+        reservations:
+          cpus: "1.00"
+          memory: 512M
 
 volumes:
-  pgdata:
-  redisdata:
+  postgres_data:
+  redis_data:
 
 networks:
-  app-network:
+  sanda-network:
     driver: bridge
