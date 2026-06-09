@@ -65,7 +65,7 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - ${APP_HOST_PORT:-3000}:3000
+      - ${PORT:-3001}:3000
     environment:
       - DB_ADAPTER=postgresql
       - DB_ENCODING=utf8
