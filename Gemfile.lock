@@ -150,7 +150,7 @@ GEM
     jbuilder (2.15.1)
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
-    json (2.19.8)
+    json (2.19.9)
     json-schema (6.2.0)
       addressable (~> 2.8)
       bigdecimal (>= 3.1, < 5)
@@ -370,8 +370,8 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    shoulda-matchers (7.0.1)
-      activesupport (>= 7.1)
+    shoulda-matchers (8.0.1)
+      activesupport (>= 7.2)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -533,7 +533,7 @@ CHECKSUMS
   io-console (0.8.2) sha256=d6e3ae7a7cc7574f4b8893b4fca2162e57a825b223a177b7afa236c5ef9814cc
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
   jbuilder (2.15.1) sha256=2430bec28fb0cebacb5875b1009cf9d8bc3c303ccb810c4c8b062a4b51457637
-  json (2.19.8) sha256=6354310fd76ef69b87d5bd1f38b40d730613baf90b6803d2d0a48f618d32dfaa
+  json (2.19.9) sha256=9b9025b7cdddafa38d316eca0b2358488e42d417045c1b90d216a9fefe46b79a
   json-schema (6.2.0) sha256=e8bff46ed845a22c1ab2bd0d7eccf831c01fe23bb3920caa4c74db4306813666
   jsonapi-renderer (0.2.2) sha256=b5c44b033d61b4abdb6500fa4ab84807ca0b36ea0e59e47a2c3ca7095a6e447b
   jwt (3.2.0) sha256=5419b1fe37b1da0982bd07051f573a8b8789ab724c2aa7e785e4784a3ed217d7
@@ -619,7 +619,7 @@ CHECKSUMS
   rubocop-rails-omakase (1.1.0) sha256=2af73ac8ee5852de2919abbd2618af9c15c19b512c4cfc1f9a5d3b6ef009109d
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
-  shoulda-matchers (7.0.1) sha256=b4bfd8744c10e0a36c8ac1a687f921ee7e25ed529e50488d61b79a8688749c77
+  shoulda-matchers (8.0.1) sha256=5dbb46e5765b9da225111b085e0819e8c8a121ff94bba430a153eb1ea2c60288
   simplecov (0.22.0) sha256=fe2622c7834ff23b98066bb0a854284b2729a569ac659f82621fc22ef36213a5
   simplecov-html (0.13.2) sha256=bd0b8e54e7c2d7685927e8d6286466359b6f16b18cb0df47b508e8d73c777246
   simplecov_json_formatter (0.1.4) sha256=529418fbe8de1713ac2b2d612aa3daa56d316975d307244399fa4838c601b428
